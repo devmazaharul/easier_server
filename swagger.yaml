@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: E-Care API
+  description: API documentation for the e-care platform that allows shopkeepers to manage services like mobile recharge, Bkash agents, utility bills, etc.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3001/api/v1'
+    description: E-Care API server
+
+paths:
+  /main/register:
+    post:
+      summary: Register a new user
+      description: Allows a new user to register by providing their details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - address
+                - gender
+                - number
+                - shopName
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                address:
+                  type: string
+                gender:
+                  type: string
+                number:
+                  type: string
+                shopName:
+                  type: string
+      responses:
+        201:
+          description: Successfully registered
+        400:
+          description: Bad Request
+
+  /main:
+    post:
+      summary: User login
+      description: Allows a user to log in with their credentials.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Successfully logged in
+        401:
+          description: Unauthorized
+
+  /main/reset_password:
+    post:
+      summary: Reset password
+      description: Allows a user to reset their password by email.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: Reset password link sent
+        400:
+          description: Bad Request
+
+  /change_password:
+    post:
+      summary: Change user password
+      description: Allows the user to change their password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        200:
+          description: Successfully changed password
+        400:
+          description: Bad Request
+
+  /add_staf:
+    post:
+      summary: Add staff
+      description: Allows the admin to add a staff member.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - role
+              properties:
+                name:
+                  type: string
+                role:
+                  type: string
+      responses:
+        201:
+          description: Staff successfully added
+        400:
+          description: Bad Request
+
+  /services:
+    get:
+      summary: Get services
+      description: Get services with a filter option (e.g., "today").
+      parameters:
+        - name: filter
+          in: query
+          description: Filter for services (e.g., "today")
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of services
+
+  /add_services:
+    post:
+      summary: Add new service
+      description: Allows the admin to add a new service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - amount
+                - type
+              properties:
+                name:
+                  type: string
+                amount:
+                  type: number
+                type:
+                  type: string
+      responses:
+        201:
+          description: Successfully added service
+        400:
+          description: Bad Request
+
+  /services/sellstoday:
+    post:
+      summary: Get today's service sales
+      description: Retrieves the sales data for today.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+      responses:
+        200:
+          description: Today's sales data
+
+  /services/sellmonth:
+    post:
+      summary: Get this month's service sales
+      description: Retrieves the sales data for the current month.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                month:
+                  type: string
+                year:
+                  type: string
+      responses:
+        200:
+          description: This month's sales data

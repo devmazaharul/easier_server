@@ -9,13 +9,13 @@ const swaggerfile=yaml.load("./swagger.yaml")
 app.use("/docs",swaggerUI.serve,swaggerUI.setup(swaggerfile))
 //limit request from same IP address if it over then message will show json format
 app.use(limiter({
-  windowMs:10*60*1000, //10 min
-  max:50, //limit each IP to 5 request per windowMs
+  windowMs:1*60*1000, //1 min
+  max:50, //limit each IP to 50 request per windowMs
   handler:(_req,res)=>{
   res.status(429).json({
-    message:"Too many request from this IP,please try again",
+    message:"Too many request from this IP,please try again after 1 min",
     status:429,
-    hint:"Please try again after 10 miniute",
+    hint:"Please try again after 1 miniute",
     timestamp:new Date().toLocaleTimeString()
   })
   }

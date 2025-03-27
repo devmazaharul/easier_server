@@ -15,7 +15,7 @@ const registerService=async({name,email,password,shopName,address,gender,number}
     await addUserObj.save()
     return validRes({
       message:"successfully register",
-      status:200,
+      status:201,
       data:{
         name,
         email

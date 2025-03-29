@@ -70,7 +70,7 @@ const getTransactionsService = async ({ trtime, trtype }) => {
     const getProducts = await productModel.find({
       type:
         trtype == 'all'
-          ? ['mobile_recharge', 'bill', 'cash_out', 'send_money']
+          ? ['mobile_recharge', 'bill', 'cash_out', 'send_money',"others"]
           : trtype,
       createdAt: {
         $gte: calDatetime(),

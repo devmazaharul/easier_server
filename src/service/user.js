@@ -65,7 +65,7 @@ const CodeSendService=async(email)=>{
       if(chekMail.isActive) throw new CustomError("Already verifed your account");
     const verifyCode=Math.floor(Math.random()*99999)
 
-    const res=await mailSend(email,chekMail.name,verifyCode)
+    await mailSend(email,chekMail.name,verifyCode)
      chekMail.activeCode=verifyCode
       await chekMail.save()
       return validRes({
@@ -85,9 +85,10 @@ const CodeSendService=async(email)=>{
 const verifyAccountwithCode=async(email,code)=>{
   try {
     const chekAcc=await userModel.findOne({email})
-    if(!chekAcc) throw new CustomError("Invalid email address")
+    if(!chekAcc) throw new CustomError("Invalid email address");
+
       if(chekAcc.isActive) throw new CustomError("Already verified")
-      if(!chekAcc.activeCode==code) throw new CustomError("Invalid code");
+      if(chekAcc.activeCode!==code) throw new CustomError("Invalid code");
     chekAcc.isActive=true
   await chekAcc.save()
   return validRes({
@@ -96,7 +97,7 @@ const verifyAccountwithCode=async(email,code)=>{
   })
     
   } catch (error) {
-    throw new CustomError(error.mesage,error.status)
+    throw new CustomError(error.message,error.status)
   }
 }
 module.exports={

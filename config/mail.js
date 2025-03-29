@@ -20,6 +20,7 @@ async function mailSend(mail="",name="Dear",code) {
     subject: "Acctivation code ✔", // Subject line
     html: `<b>Hlw ${name}</b> <br/> <p>Your email is ${mail} . Your activaton code is ${code}</p>`, // html body
   });
+  return info;
 }
 
 export {

@@ -11,7 +11,7 @@ const {
   updateStaf,
   deleteStaf,
 } = require('./controller/staf');
-const { Register, Login } = require('./controller/user');
+const { Register, Login, SendCode, verifyAccount } = require('./controller/user');
 const {
   authentication,
   authorization,
@@ -22,7 +22,8 @@ const route = require('express').Router();
 //without authenticaton
 route.post('/register', Register); //done
 route.post('/', Login); //done
-route.patch("/active",)
+route.patch("/send_code",SendCode)
+route.patch("/active_account",verifyAccount)
 
 //with authentication
 route

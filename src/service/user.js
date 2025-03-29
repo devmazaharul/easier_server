@@ -58,7 +58,7 @@ const loginService=async({email,password})=>{
 }
 
 
-const verifyAccount=async(email)=>{
+const CodeSendService=async(email)=>{
   try {
     const chekMail=await userModel.findOne({email})
     if(!chekMail) throw new CustomError("Invalid email address")
@@ -101,6 +101,6 @@ const verifyAccountwithCode=async(email,code)=>{
 module.exports={
   registerService,
   loginService,
-  verifyAccount,
+  CodeSendService,
   verifyAccountwithCode
 }

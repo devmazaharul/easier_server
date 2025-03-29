@@ -64,7 +64,8 @@ const CodeSendService=async(email)=>{
     if(!chekMail) throw new CustomError("Invalid email address")
       if(chekMail.isActive) throw new CustomError("Already verifed your account");
     const verifyCode=Math.floor(Math.random()*99999)
-    await mailSend(email,chekMail.name,verifyCode)
+
+    const res=await mailSend(email,chekMail.name,verifyCode)
      chekMail.activeCode=verifyCode
       await chekMail.save()
       return validRes({

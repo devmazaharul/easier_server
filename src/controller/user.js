@@ -63,7 +63,7 @@ const SendCode=async(req,res,next)=>{
   try {
     const email=req.body.email||""
     if(!email) throw new CustomError("Please provide email address")
-      if(!isValidEmail(email)) throw new CustomError("Please provide a vlid email address")
+      if(!isValidEmail(email)) throw new CustomError("Please provide a valid email address")
         const responce=await CodeSendService(email);
       res.status(responce.status).json(responce)
 

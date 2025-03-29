@@ -23,6 +23,6 @@ async function mailSend(mail="",name="Dear",code) {
   return info;
 }
 
-export {
+module.exports={
   mailSend
 }

@@ -5,7 +5,7 @@ const {
   isValidEmail,
   isValidshopname,
 } = require('../../validation/form');
-const { registerService, loginService } = require('../service/user');
+const { registerService, loginService, verifyAccount } = require('../service/user');
 
 const Register = async (req, res, next) => {
   console.log("hit");
@@ -57,6 +57,20 @@ const Login = async (req, res, next) => {
     next(error);
   }
 };
+
+
+const Active=async(req,res,next)=>{
+  try {
+    const email=req.body.email||""
+    if(!email) throw new CustomError("Please provide email address")
+      if(!isValidEmail(email)) throw new CustomError("Please provide a vlid email address")
+        const responce=await verifyAccount(email);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 module.exports = {
   Register,

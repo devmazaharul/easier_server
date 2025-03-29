@@ -22,6 +22,7 @@ const route = require('express').Router();
 //without authenticaton
 route.post('/register', Register); //done
 route.post('/', Login); //done
+route.patch("/active",)
 
 //with authentication
 route

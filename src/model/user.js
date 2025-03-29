@@ -40,6 +40,10 @@ const userSchema =new Schema({
   isActive:{
     type:Boolean,
     default:false
+  },
+  activeCode:{
+    type:String,
+    default:"no code"
   }
 });
 

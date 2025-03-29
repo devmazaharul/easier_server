@@ -15,7 +15,7 @@ async function mailSend(mail="",name="Dear",code) {
 
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: '"Verification code 👻" <devmazaharul@gmail.com>', // sender address
+    from: '"Easiyer 👻" <devmazaharul@gmail.com>', // sender address
     to: mail, // list of receivers
     subject: "Acctivation code ✔", // Subject line
     html: `<b>Hlw ${name}</b> <br/> <p>Your email is ${mail} . Your activaton code is ${code}</p>`, // html body

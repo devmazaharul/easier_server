@@ -66,6 +66,7 @@ const transactions = async (req, res, next) => {
       'bill',
       'send_money',
       'cash_out',
+      "all"
     ]; //filter option by type
     const validDate = ['1m', '15d', '7d', '1d', 'all']; //filter option by date
 
@@ -76,14 +77,14 @@ const transactions = async (req, res, next) => {
       if (queryFilter.time) {
         if (!validDate.includes(queryFilter.time))
           throw new CustomError(
-            'Invalid filter time avabile time 1m, 15d, all, 1d default 7d'
+            'Invalid filter time avabile time 1m, 15d, all, 1d and all default 7d'
           );
         trtime = queryFilter.time;
       }
       if (queryFilter.type) {
         if (!validTypes.includes(queryFilter.type))
           throw new CustomError(
-            'Please provide correct type of product avabile product type mobile_recharge, cash_out, send_money and others.'
+            'Please provide correct type of product avabile product type mobile_recharge, cash_out, send_money others and all.'
           );
         trtype = queryFilter.type;
       }

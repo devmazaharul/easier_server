@@ -20,15 +20,20 @@ const productSchema=new Schema({
     type:Schema.ObjectId,
     ref:"users"
   },
-  entryierId:[
+  entryierId:
     {
     type:String,
     required:true
     }
-  ],
-  trTime:{
-    type:Date,
-    default:Date.now()
+  ,
+ isUpdate:{
+    type:Boolean,
+    default:false
+
+  },
+  addedBy:{
+    type:String,
+    required:true
   }
 },{timestamps:true})
 const productModel=model("products",productSchema);

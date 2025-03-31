@@ -6,6 +6,7 @@ const {
 const {
   getTransactionsService,
   addProductService,
+  getProductById,
 } = require('../service/product');
 
 const addProduct = async (req, res, next) => {
@@ -97,7 +98,24 @@ const transactions = async (req, res, next) => {
   }
 };
 
+
+const getProduct=async(req,res,next)=>{
+  try {
+    const productId=req.params.id;
+
+    if(!productId) throw new CustomError("Invalid product id")
+
+        const respone=await getProductById(productId)
+      res.status(respone.status).json(respone)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+
 module.exports = {
   transactions,
   addProduct,
+  getProduct
 };

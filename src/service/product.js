@@ -36,13 +36,18 @@ const addProductService = async ({
       userNumber: usernumber,
       adminId: adminId,
       entryierId: entryierId,
+      addedBy:
+        tokenInfo.role == 'staf'
+          ? 'staf'
+          : (tokenInfo.role = 'admin' ? 'admin' : null),
     });
     await addProduct.save();
     return validRes({
       message: 'Product added',
       status: 200,
       data: {
-        ...addProduct._doc,
+        productId: addProduct._id,
+        entiyerId: addProduct.entryierId,
       },
     });
   } catch (error) {
@@ -67,15 +72,17 @@ const getTransactionsService = async ({ trtime, trtype }) => {
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - caltime);
       return sevenDaysAgo;
     }
-    const getProducts = await productModel.find({
-      type:
-        trtype == 'all'
-          ? ['mobile_recharge', 'bill', 'cash_out', 'send_money',"others"]
-          : trtype,
-      createdAt: {
-        $gte: calDatetime(),
-      },
-    });
+    const getProducts = await productModel
+      .find({
+        type:
+          trtype == 'all'
+            ? ['mobile_recharge', 'bill', 'cash_out', 'send_money', 'others']
+            : trtype,
+        updatedAt: {
+          $gte: calDatetime(),
+        },
+      })
+      .select('-adminId -createdAt -__v');
     if (!getProducts) throw new CustomError('No product found');
 
     return validRes({
@@ -91,7 +98,54 @@ const getTransactionsService = async ({ trtime, trtype }) => {
   }
 };
 
+const getProductById = async (productId) => {
+  try {
+    const findProduct = await productModel
+      .findById(productId)
+      .select('-__v -createdAt');
+    if (!findProduct) throw new CustomError('Product not found');
+
+    const adminInfo =
+      findProduct.addedBy == 'admin' &&
+      (await userModel
+        .findById(findProduct.entryierId)
+        .select('-password -createdAt'));
+    const stafInfo =
+      findProduct.addedBy == 'staf' &&
+      (await stafModel.findById(findProduct.entryierId));
+
+    if (findProduct.addedBy == 'admin') {
+      return validRes({
+        message: 'successfully get data',
+        status: 200,
+        data: {
+          items: findProduct,
+          addedByInfo: {
+            name: adminInfo.name,
+            addedBy: 'admin',
+          },
+        },
+      });
+    } else {
+      return validRes({
+        message: 'successfully get data',
+        status: 200,
+        data: {
+          items: findProduct,
+          addedByInfo: {
+            name: stafInfo.name,
+            addedBy: 'staf',
+          },
+        },
+      });
+    }
+  } catch (error) {
+    throw new CustomError(error.message, error.status);
+  }
+};
+
 module.exports = {
   getTransactionsService,
   addProductService,
+  getProductById,
 };

@@ -2,6 +2,7 @@ const {
 
   transactions,
   addProduct,
+  getProduct,
 } = require('./controller/product');
 const {
   StafRegister,
@@ -45,6 +46,13 @@ route.get(
   authorization(['admin', 'staf']),
   transactions
 ); //default last 1m transaction ?time=[all,nM,7d] type=recharge&&searchFiled=name&&text=val
+
+//product action route groupp
+route.route("/transactions/:id")
+.get(authentication,authorization(["admin","staf"]),getProduct)
+.patch(authentication,authorization(["admin","staf"]))
+.delete(authentication,authorization(["admin","staf"]))
+
 
 //staf part
 route.post('/stafs', authentication, StafRegister); //add staf

@@ -16,11 +16,12 @@ const addProductService = async ({
   try {
     let adminId;
     let entryierId;
+
     if (tokenInfo.role == 'staf') {
       const findStaf = await stafModel.findOne({ id: tokenInfo.id });
       if (!findStaf) throw new CustomError('Invalid token or login again');
       adminId = findStaf.adminId;
-      entryierId = tokenInfo.id;
+      entryierId = findStaf._id;
     }
     if (tokenInfo.role == 'admin') {
       const findAdmin = await userModel.findOne({ email: tokenInfo.email });
@@ -35,7 +36,7 @@ const addProductService = async ({
       type,
       userNumber: usernumber,
       adminId: adminId,
-      entryierId: entryierId,
+      entryierId:entryierId,
       addedBy:
         tokenInfo.role == 'staf'
           ? 'staf'
@@ -56,16 +57,31 @@ const addProductService = async ({
 };
 
 //filter tracsaction
-const getTransactionsService = async ({ trtime, trtype }) => {
+const getTransactionsService = async ({ trtime, trtype,userInfo }) => {
   try {
     //write your code here
-
     let caltime = 7;
     if (trtime == '1m') caltime = 30;
     if (trtime == '7d') caltime = 7;
     if (trtime == '15d') caltime = 15;
     if (trtime == '1d') caltime = 1;
     if (trtime == 'all') caltime = 365; //1years data get
+
+    let adminId=""
+    if(userInfo.role=="admin"){
+        const getAdminId=await userModel.findOne({email:userInfo.email});
+        if(!getAdminId) throw new CustomError("Invalid informaton")
+        adminId=getAdminId._id;
+    }
+
+    if(userInfo.role=="staf"){
+      const adminBystaf=await stafModel.findOne({number:userInfo.number})
+      if(!adminBystaf) throw new CustomError("Invalid information")
+        adminId=adminBystaf.adminId;
+    }
+
+
+
 
     function calDatetime() {
       const sevenDaysAgo = new Date();
@@ -74,6 +90,7 @@ const getTransactionsService = async ({ trtime, trtype }) => {
     }
     const getProducts = await productModel
       .find({
+        adminId:adminId && adminId,
         type:
           trtype == 'all'
             ? ['mobile_recharge', 'bill', 'cash_out', 'send_money', 'others']
@@ -83,6 +100,7 @@ const getTransactionsService = async ({ trtime, trtype }) => {
         },
       })
       .select('-adminId -createdAt -__v');
+
     if (!getProducts) throw new CustomError('No product found');
 
     return validRes({

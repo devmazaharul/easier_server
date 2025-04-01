@@ -45,7 +45,8 @@ route.get(
   authentication,
   authorization(['admin', 'staf']),
   transactions
-); //default last 1m transaction ?time=[all,nM,7d] type=recharge&&searchFiled=name&&text=val
+); 
+//default last 1m transaction ?time=[all,nM,7d] type=recharge&&searchFiled=name&&text=val
 
 //product action route groupp
 route.route("/transactions/:id")

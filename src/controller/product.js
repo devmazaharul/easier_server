@@ -61,6 +61,7 @@ const addProduct = async (req, res, next) => {
 const transactions = async (req, res, next) => {
   try {
     const queryFilter = req.query;
+    const userInfo=req.user;
     const validTypes = [
       'others',
       'mobile_recharge',
@@ -91,7 +92,7 @@ const transactions = async (req, res, next) => {
       }
     }
 
-    const responce = await getTransactionsService({ trtime, trtype });
+    const responce = await getTransactionsService({ trtime, trtype,userInfo});
     res.status(responce.status).json(responce);
   } catch (error) {
     next(error);

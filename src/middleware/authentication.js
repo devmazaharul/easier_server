@@ -14,7 +14,8 @@ const authentication = async (req, _res, next) => {
     if (Object.keys(tokenVerify).length > 0 && tokenVerify.role == 'admin') {
       req.user = tokenVerify;
       next();
-    } else if (Object.keys(tokenVerify).length > 0 && token.role == 'staf') {
+    } 
+     if (Object.keys(tokenVerify).length > 0 && tokenVerify.role == 'staf') {
       req.user = tokenVerify;
       next();
     }

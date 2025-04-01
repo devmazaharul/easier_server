@@ -51,17 +51,20 @@ const stafLoginServices=async({number,password})=>{
     //genarate token and send to user
     const gentoken=genarateToken({
         id:findStaf._id,
-      name:findStaf.name,
-      number:findStaf.number,
-      role:"staf"
+        name:findStaf.name,
+        number:findStaf.number,
+        role:"staf"
     })
 
           return validRes({
             message:"Success",
             status:200,
             data:{
-              token:gentoken,
+              token:`Bearer ${gentoken}`,
               name:findStaf.name,
+              number:findStaf.number,
+              adminID:findStaf.adminId,
+              address:findStaf.address
             }
           })
   } catch (error) {

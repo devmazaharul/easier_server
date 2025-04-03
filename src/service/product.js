@@ -60,12 +60,20 @@ const addProductService = async ({
 const getTransactionsService = async ({ trtime, trtype,userInfo }) => {
   try {
     //write your code here
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+
     let caltime = 7;
     if (trtime == '1m') caltime = 30;
     if (trtime == '7d') caltime = 7;
     if (trtime == '15d') caltime = 15;
-    if (trtime == '1d') caltime = 1;
     if (trtime == 'all') caltime = 365; //1years data get
+
+
+
 
     let adminId=""
     if(userInfo.role=="admin"){
@@ -95,7 +103,9 @@ const getTransactionsService = async ({ trtime, trtype,userInfo }) => {
           trtype == 'all'
             ? ['mobile_recharge', 'bill', 'cash_out', 'send_money', 'others']
             : trtype,
-        updatedAt: {
+        updatedAt: trtime=="today"?{
+           $gte: today, $lt: tomorrow 
+        }: {
           $gte: calDatetime(),
         },
       })

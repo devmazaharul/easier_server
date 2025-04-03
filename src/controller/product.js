@@ -70,7 +70,7 @@ const transactions = async (req, res, next) => {
       'cash_out',
       "all"
     ]; //filter option by type
-    const validDate = ['1m', '15d', '7d', '1d', 'all']; //filter option by date
+    const validDate = ['1m', '15d', '7d', 'today', 'all']; //filter option by date
 
     let trtime = '7d';
     let trtype = 'all';
@@ -79,7 +79,7 @@ const transactions = async (req, res, next) => {
       if (queryFilter.time) {
         if (!validDate.includes(queryFilter.time))
           throw new CustomError(
-            'Invalid filter time avabile time 1m, 15d, all, 1d and all default 7d'
+            'Invalid filter time avabile time 1m, 15d, all, today, and all default 7d'
           );
         trtime = queryFilter.time;
       }
